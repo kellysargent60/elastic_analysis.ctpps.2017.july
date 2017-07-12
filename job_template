@@ -1,0 +1,39 @@
+#!/bin/sh
+
+export HOME="/afs/cern.ch/exp/totem/scratch/jkaspar"
+export RFIO_USE_CASTOR_V2=YES
+export STAGE_HOST=castorpublic
+export STAGE_SVCCLASS=default
+
+source "/cvmfs/cms.cern.ch/cmsset_default.sh"
+cd "/afs/cern.ch/work/j/jkaspar/software/ctpps/production/CMSSW_9_2_0/src"
+cmsenv
+
+# EOS configuration
+source "/afs/cern.ch/project/eos/installation/totem/etc/setup.sh"
+shopt -s expand_aliases
+
+function SafeCmd()
+{
+	echo ""
+	echo ">> SafeCmd: $@"
+	for i in {1..10}
+	do
+		echo "* attempt $i:"
+		"$@" && return 0
+		sleep 5
+	done
+	echo "* giving up..."
+	return 1
+}
+
+# define directories
+job_dir="$JOB_DIR"
+
+(
+# run the process
+cd "$job_dir"
+
+$COMMAND
+
+) &> "$job_dir/$JOB_LOG_FILE"

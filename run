@@ -1,0 +1,280 @@
+#!/bin/bash
+
+#----------------------------------------------------------------------------------------------------
+
+function PrintUsage()
+{
+	echo -e "USAGE: run <option> <src file> <option> <dir> <dir> ..."
+	echo -e "OPTIONS"
+
+	echo -e "	-h, --help		print this help and exit"
+	echo -e "	-no-run, -dno		do not run the program for any diagonal, just compile"
+	echo -e "	-d45b_56t, -d45b	run the program for diagonal 45b-56t"
+	echo -e "	-d45t_56b, -d45t	run the program for diagonal 45t-56b"
+	echo -e "	-dboth			run the program for both diagonals"
+	echo -e "	-dc, -dcomb		run the program in combined diagonals"
+	echo -e "	-danti			run the program in anti-diagonals"
+	echo -e "	-O <option>		pass the option to the program"
+	echo -e "	-no-bckg		do no run compilation and programs in background"
+	echo -e "	-lxbatch		prepare job for LXBATCH instead of executing locally"
+	echo -e "	-submit			submit job to LXBATCH, implies -lxbatch option"
+}
+
+#----------------------------------------------------------------------------------------------------
+
+diag_45b_56t="y"
+diag_45t_56b="y"
+diag_combined="y"
+
+diag_45b_56b="n"
+diag_45t_56t="n"
+
+runInBackground="y"
+
+lxbatch="n"
+submit="n"
+
+rcIncompatibleDiagonal=123
+
+bsub_options="pool>5000"
+bsub_queue="8nh"
+
+#----------------------------------------------------------------------------------------------------
+
+function RunOneDiagonal()
+{
+	local tag="$1"
+	local dir="$2"
+	local par_more="$3"
+	local diag="$4"
+	local options="$5"
+
+	local optionsStr=""
+	if [ ! "$options" == "" ]
+	then
+		optionsStr=" ($options)"
+	fi
+
+	label="$tag @ $dir:$diag"
+	log="${tag}_${diag}.log_run"
+
+	if [ "$lxbatch" == "y" ]
+	then
+		local cwd=`pwd -P`
+		local job_dir="$cwd"
+		local job_file=".${tag}_${diag}.job"
+		local job_log_file=".${tag}_${diag}.log_job"
+
+		cat "$top_dir/job_template" | sed "\
+				s|\$JOB_DIR|$job_dir|; \
+				s|\$JOB_LOG_FILE|$job_log_file|; \
+				s|\$COMMAND|{ time \"./$exe_file\" \"$diag\" $options ; } \&> \"$log\"|; \
+			" > "$job_file"
+		chmod u+x "$job_file"
+
+		if [ "$submit" == "y" ]
+		then
+			result=`bsub -R "$bsub_options" -q "$bsub_queue" -o /dev/null -e /dev/null "$cwd/$job_file"`
+			echo "$label > $result"
+		else
+			echo "$label > would be submitted (use -submit option)"
+		fi
+	else
+		echo "$label > running$optionsStr"
+		{ time "./$exe_file" "$diag" $options ; } &> "$log"
+		errCode="$?"
+		case "$errCode" in
+			0)
+				echo "$label > done"
+				;;
+	
+			$rcIncompatibleDiagonal)
+				rm "$log"
+				;;
+	
+			*)
+				echo "$label > run error ($errCode)"
+				if [ "$par_more" -eq 1 ]; then tail -n 5 "$log"; fi
+				;;
+		esac
+	fi
+}
+
+#----------------------------------------------------------------------------------------------------
+
+function RunOneDir()
+{
+	local input="$1"
+	local src_file=".$input"
+	local tag="${input%.*}"
+	local exe_file=".$tag"
+	local dir="$2"
+	local par_more="$3"
+	local options="$4"
+
+	top_dir=`pwd`
+
+	cp "$input" "$dir/$src_file"
+	cd "$dir"
+
+	
+	echo "$tag @ $dir > compiling"
+	g++ -O3 -Wall -Wextra -Wno-attributes --std=c++11\
+			-I"$top_dir" \
+			`root-config --libs` -lMinuit -lMinuit2 `root-config --cflags` \
+			-I"$CMSSW_BASE/src" \
+			-I"$CMSSW_RELEASE_BASE/src" \
+			-L"$CMSSW_BASE/lib/slc6_amd64_gcc530" \
+			-L"$CMSSW_RELEASE_BASE/lib/slc6_amd64_gcc530" \
+			-lDataFormatsFWLite \
+			-lDataFormatsCommon \
+			-lDataFormatsCTPPSDetId \
+			"$src_file" -o "$exe_file" &> "$tag.log_compile"
+
+	# compilation error?
+ 	if [ $? -ne 0 ]
+	then
+		echo "$tag @ $dir > error in compilation"
+		if [ "$par_more" -eq 1 ]; then cat "$tag.log_compile"; fi
+		return
+	else
+		echo "$tag @ $dir > compiled"
+	fi
+
+	if [ ! -s "$tag.log_compile" ]
+	then
+		rm "$tag.log_compile"
+	fi
+
+	# run
+	if [ "$diag_45b_56t" == "y" ]
+	then
+		RunOneDiagonal "$tag" "$dir" "$par_more" "45b_56t" "$options" &
+	fi
+
+	if [ "$diag_45t_56b" == "y" ]
+	then
+		RunOneDiagonal "$tag" "$dir" "$par_more" "45t_56b" "$options" &
+	fi
+	
+	if [ "$diag_combined" == "y" ]
+	then
+		RunOneDiagonal "$tag" "$dir" "$par_more" "combined" "$options" &
+	fi
+
+	if [ "$diag_45b_56b" == "y" ]
+	then
+		RunOneDiagonal "$tag" "$dir" "$par_more" "45b_56b" "$options" &
+	fi
+
+	if [ "$diag_45t_56t" == "y" ]
+	then
+		RunOneDiagonal "$tag" "$dir" "$par_more" "45t_56t" "$options" &
+	fi
+
+	cd - &> /dev/null
+}
+
+#----------------------------------------------------------------------------------------------------
+
+if [ $# -le 0 ]
+then
+	PrintUsage
+	exit 1
+fi
+
+while [ -n "$1" ]
+do
+	case "$1" in
+		"-h" | "--help")
+			PrintUsage
+			exit 1
+			;;
+
+		"-no-run" | "-dno")
+			diag_45b_56t="n"
+			diag_45t_56b="n"
+			diag_combined="n"
+			diag_45b_56b="n"
+			diag_45t_56t="n"
+			;;
+		
+		"-d45b_56t" | "-d45b")
+			diag_45b_56t="y"
+			diag_45t_56b="n"
+			diag_combined="n"
+			;;
+		
+		"-d45t_56b" | "-d45t")
+			diag_45b_56t="n"
+			diag_45t_56b="y"
+			diag_combined="n"
+			;;
+
+		"-dboth")
+			diag_45b_56t="y"
+			diag_45t_56b="y"
+			diag_combined="n"
+			;;
+
+		"-dc" | "-dcomb")
+			diag_45b_56t="n"
+			diag_45t_56b="n"
+			diag_combined="y"
+			;;
+
+		"-danti")
+			diag_45b_56t="n"
+			diag_45t_56b="n"
+			diag_combined="n"
+			diag_45b_56b="y"
+			diag_45t_56t="y"
+			;;
+
+		"-O")
+			shift
+			run_options="$1"
+			;;
+
+		"-no-bckg")
+			runInBackground="n"
+			;;
+
+		"-lxbatch")
+			lxbatch="y"
+			;;
+
+		"-submit")
+			lxbatch="y"
+			submit="y"
+			;;
+
+		*)
+			if [ ! -d "$1" ]
+			then
+				if [ -s "$1" ]
+				then
+					src_file="$1"
+				else
+					echo "ERROR: '$1' is neither source file, neither directory neither parameter."
+					PrintUsage
+					exit 1
+				fi
+			else
+				if [ "$src_file" == "" ]
+				then
+					echo "ERROR: source file not defined, skipping directory '$1'."
+				else
+					if [ "$runInBackground" == "y" ]
+					then
+						RunOneDir "$src_file" "$1" "1" "$run_options" &
+					else
+						RunOneDir "$src_file" "$1" "1" "$run_options"
+					fi
+				fi
+			fi
+			;;
+	esac
+
+	shift
+done
