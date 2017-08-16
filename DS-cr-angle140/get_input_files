@@ -1,0 +1,23 @@
+#!/bin/bash
+
+function PrintOne()
+{
+	local dir="$1"
+
+	echo ""
+	echo "	prefix=\"root://eostotem.cern.ch/$1/\";"
+
+	eos ls "$1" | grep "$filter" | grep "reco.root" | while read f
+	do
+		echo "	input_files.push_back(prefix + \"$f\");"
+	done
+}
+
+echo "	std::string prefix;"
+
+filter="run_298593"
+
+PrintOne "/eos/totem/data/ctpps/reconstruction/2017/alignment_run_July/version4-pilot"
+
+PrintOne "/eos/totem/data/ctpps/reconstruction/2017/alignment_run_July/version4-rest"
+
