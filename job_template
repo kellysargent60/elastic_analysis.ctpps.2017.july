@@ -10,8 +10,8 @@ cd "/afs/cern.ch/work/j/jkaspar/software/ctpps/production/CMSSW_9_2_0/src"
 cmsenv
 
 # EOS configuration
-source "/afs/cern.ch/project/eos/installation/totem/etc/setup.sh"
-shopt -s expand_aliases
+#source "/afs/cern.ch/project/eos/installation/totem/etc/setup.sh"
+#shopt -s expand_aliases
 
 function SafeCmd()
 {
