@@ -87,13 +87,13 @@ void Init_base()
 #endif
 
 	anal.alignment_t0 = 0.;			// beginning of the first time-slice
-	anal.alignment_ts = 60.*60.;	// time-slice in s
+	anal.alignment_ts = 120.*60.;	// time-slice in s
 	
 	// TODO
-	anal.alignmentYRanges["L_1_F"] = Analysis::AlignmentYRange(-17., -3.5, +3.9, 17.);
-	anal.alignmentYRanges["L_1_N"] = Analysis::AlignmentYRange(-17., -4.0, +4.2, 17.);
-	anal.alignmentYRanges["R_1_N"] = Analysis::AlignmentYRange(-17., -3.3, +0.0, 17.);
-	anal.alignmentYRanges["R_1_F"] = Analysis::AlignmentYRange(-17., -3.2, +4.1, 17.);
+	anal.alignmentYRanges["L_2_F"] = Analysis::AlignmentYRange(-40., +10, -10., +40);
+	anal.alignmentYRanges["L_1_F"] = Analysis::AlignmentYRange(-40., +10, -10., +40);
+	anal.alignmentYRanges["R_1_F"] = Analysis::AlignmentYRange(-40., +10, -10., +40);
+	anal.alignmentYRanges["R_2_F"] = Analysis::AlignmentYRange(-40., +10, -10., +40);
 
 #if 0
 	// TODO
