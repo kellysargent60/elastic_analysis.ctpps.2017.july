@@ -781,16 +781,14 @@ int main(int argc, char **argv)
 		ch_in->GetEntry(ev_idx);
 
 		// remove troublesome runs
-		unsigned int run = ev.run_num / 100000;
-		unsigned int file = ev.run_num % 100000;
-		if (SkipRun(run, file, true))
+		if (SkipRun(ev.run_num))
 			continue;
 
 		// update timestamp run boundaries
-		auto rtbit = runTimestampBoundaries.find(run);
+		auto rtbit = runTimestampBoundaries.find(ev.run_num);
 		if (rtbit == runTimestampBoundaries.end())
 		{
-			runTimestampBoundaries.insert({run, {ev.timestamp, ev.timestamp}});
+			runTimestampBoundaries.insert({ev.run_num, {ev.timestamp, ev.timestamp}});
 		} else {
 			rtbit->second.first = min(rtbit->second.first, ev.timestamp);
 			rtbit->second.second = max(rtbit->second.second, ev.timestamp);
@@ -822,7 +820,7 @@ int main(int argc, char **argv)
 		//g_timestamp_vs_ev_idx_dgn->SetPoint(g_timestamp_vs_ev_idx_dgn->GetN(), ev_idx, ev.timestamp);
 
 		// select the elastic-trigger bunch(es) only
-		if (SkipBunch(run, ev.bunch_num))
+		if (SkipBunch(ev.run_num, ev.bunch_num))
 			continue;
 
 		// zero bias event?

@@ -375,7 +375,7 @@ bool CalculateAcceptanceCorrections(double th_y_sign,
 
 //----------------------------------------------------------------------------------------------------
 
-bool SkipRun(unsigned int /*run*/, unsigned int /*file*/, bool /*strict = true */)
+bool SkipRun(unsigned int /*run*/)
 {
 	return false;
 }
