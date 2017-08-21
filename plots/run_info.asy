@@ -18,11 +18,13 @@ void AddRun(string ds, int r, real f, real t, pen p = yellow)
 	colors.push(p);
 }
 
-AddRun("DS1", 10077, 1220, 4202);
-AddRun("DS1", 10079, 4613, 5509);
-AddRun("DS1", 10080, 5564, 13643);
-AddRun("DS1", 10081, 13702, 16100);
-AddRun("DS1", 10082, 16675, 17420);
+AddRun("cr-angle-120", 298597, 85761, 94143);
+
+//AddRun("cr-angle-130", 130, 74913, 85389);
+AddRun("cr-angle-130", 298594, 74913, 80544);
+AddRun("cr-angle-130", 298596, 82568, 85389);
+
+AddRun("cr-angle-140", 298593, 65832, 74526);
 
 // in hours
 real time_min = 0;
@@ -46,7 +48,10 @@ void DrawRunBands(string ds_filter="", real y_min=0, real y_max=0, bool details=
 		filldraw((x_min, y_min)--(x_max, y_min)--(x_max, y_max)--(x_min, y_max)--cycle, p, nullpen);
 
 		if (details)
+		{
 			label(format("{\SmallerFonts %u}", runs[i]), ((x_min + x_max)/2, y_max), S);
+			//label(run_datasets[i], ((x_min + x_max)/2, y_max), S);
+		}
 	}
 }
 

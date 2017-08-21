@@ -86,8 +86,8 @@ void Init_base()
 	anal.t_min_fit = 0.027; // TODO
 #endif
 
-	anal.alignment_t0 = 0.;			// beginning of the first time-slice
-	anal.alignment_ts = 240.*60.;	// time-slice in s
+	anal.alignment_t0 = 65832;		// beginning of the first time-slice
+	anal.alignment_ts = 145.*60.;	// time-slice in s
 
 	// TODO
 	anal.alignmentYRanges["L_2_F"] = Analysis::AlignmentYRange(-40., +10, -10., +40);
