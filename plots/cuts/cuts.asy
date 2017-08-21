@@ -5,12 +5,16 @@ string topDir = "../../";
 
 TH2_palette = Gradient(blue, heavygreen, yellow, red);
 
-string datasets[] = { "DS1" };
-//string dgns[] = { "45b_56t", "45t_56b" };
-string dgns[] = { "45t_56b" };
+string datasets[] = {
+	"DS-cr-angle120",
+	"DS-cr-angle130",
+	"DS-cr-angle140"
+};
 
-//int cuts[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
-int cuts[] = { 2, 5, 6 };
+string dgns[] = { "45b_56t", "45t_56b" };
+//string dgns[] = { "45t_56b" };
+
+int cuts[] = { 1, 2, 3, 4, 5, 6, 7 };
 
 real scale_x[] = { 1e6, 1e6, 1e6, 1e6, 1e0, 1e0, 1e6, 1e6 };
 real scale_y[] = { 1e6, 1e6, 1e0, 1e0, 1e0, 1e0, 1e0, 1e0 };
@@ -19,16 +23,18 @@ string label_x[] = { "$\th_x^{*R}\ung{\mu rad}$", "$\th_y^{*R}\ung{\mu rad}$", "
 string label_y[] = { "$\th_x^{*L}\ung{\mu rad}$", "$\th_y^{*L}\ung{\mu rad}$", "$x^{*R}\ung{mm}$", "$x^{*L}\ung{mm}$", "$y^{R,F} - y^{R,N}\ung{mm}$", "$y^{L,F} - y^{L,N}\ung{mm}$", "$\De^{R-L} x^*\ung{mm}$", "$\De^{R-L} y^*\ung{mm}$" };
 string label_cut[] = { "$\De^{R-L} \th_x^{*}\ung{\mu rad}$", "$\De^{R-L} \th_y^{*}\ung{\mu rad}$", "$x^{*R}\ung{mm}$", "$x^{*L}\ung{mm}$", "$cq5$", "$cq6$", "$cq7$", "$cq8$" };
 
-real lim_x_low[] = { -200, -150, -1000, -1000, -15, -15, -200, -600 };
-real lim_x_high[] = { +200, 150, +1000, +1000, +15, +15, +200, +600 };
+real lim_x_low[] = { -2000, -1000, -1000, -1000, -7, -7, -1000, -1000 };
+real lim_x_high[] = { +2000, 1000, +1000, +1000, +3, +3, +1000, +1000 };
 
-real lim_y_low[] = { -200, -150, -0.8, -0.8, -0.5, -0.5, -0.2, -4 };
-real lim_y_high[] = { +200, 150, +0.8, +0.8, +0.5, +0.5, +0.2, +4 };
+real lim_y_low[] = { -2000, -1000, -1, -1, -1.5, -1.5, -1.0, -4 };
+real lim_y_high[] = { +2000, 1000, +1, +1, +1.5, +1.5, +1.0, +4 };
 
 for (int ci : cuts.keys)
 {
 	int cut = cuts[ci];
 	int idx = cut - 1;
+
+	write("* cut ", cut);
 
 	NewPad(false);
 	
@@ -70,7 +76,7 @@ for (int ci : cuts.keys)
 			
 			NewPad(label_cut[idx]);
 			string objH = format("elastic cuts/cut %i", cut) + format("/h_cq%i", cut);
-			draw(scale(scale_y[idx], 1.), RootGetObject(f, objH+""), "vl,eb,lR");
+			draw(scale(scale_y[idx], 1.), RootGetObject(f, objH+""), "vl,eb,lM,lR", red);
 			//draw(scale(scale_x[idx], scale_y[idx]), RootGetObject(f, objH+"|gaus"));
 			AttachLegend();
 		}
