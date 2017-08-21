@@ -19,7 +19,7 @@ drawGridDef = true;
 
 TGraph_errorBar = None;
 
-bool drawFits = false;
+bool drawFits = true;
 
 //----------------------------------------------------------------------------------------------------
 NewRow();
@@ -28,7 +28,7 @@ for (int ui : units.keys)
 {
 	NewPad("time $\ung{h}$", "tilt $\ung{mrad}$", axesAbove=false);
 	//currentpad.yTicks = RightTicks(5., 1.);
-	DrawRunBands(-40, +40);
+	DrawRunBands(-60, +60);
 
 	for (int di : datasets.keys)
 	{
@@ -36,17 +36,16 @@ for (int ui : units.keys)
 		draw(swToHours, RootGetObject(topDir+datasets[di]+"/alignment.root", "global/"+units[ui]+"/a_g"), "p,l,eb", heavygreen, mCi+1pt+heavygreen);
 		
 		//draw(swToHours, RootGetObject(topDir+datasets[di]+"/alignment.root", "global/"+units[ui]+"/a"), "p,l,eb", blue, mCi+1pt+blue);
-	
-		if (drawFits)
-		{
-			real unc = 4;
-			RootGetObject(topDir+datasets[di]+"/alignment_fit.root", ""+units[ui]+"/a_fit");
-			draw(shift(0, +unc)*swToHours, robj, "l", red+dashed);
-			draw(shift(0,    0)*swToHours, robj, "l", red+2pt);
-			draw(shift(0, -unc)*swToHours, robj, "l", red+dashed);
-		}
 	}
 	
+	if (drawFits)
+	{
+		real unc = 15;
+		RootGetObject(topDir+"alignment/global_fit.root", units[ui]+"/a_fit");
+		draw(shift(0, +unc)*swToHours, robj, "l", red+dashed);
+		draw(shift(0,    0)*swToHours, robj, "l", red+2pt);
+		draw(shift(0, -unc)*swToHours, robj, "l", red+dashed);
+	}
 
 	//limits((time_min, 0), (time_max, +40), Crop);
 	AttachLegend(unit_labels[ui], SE, SE);
@@ -75,14 +74,15 @@ for (int ui : units.keys)
 
 		//draw(swToHours, RootGetObject(topDir+datasets[di]+"/alignment.root", "global/"+units[ui]+"/b"), "p,l,eb", blue+1pt, mCi+1pt+blue);
 	
-		if (drawFits)
-		{
-			real unc = 30;
-			RootGetObject(topDir+datasets[di]+"/alignment_fit.root", ""+units[ui]+"/b_fit");
-			draw(shift(0, +unc)*swToHours, robj, "l", red+dashed);
-			draw(shift(0,    0)*swToHours, robj, "l", red+2pt);
-			draw(shift(0, -unc)*swToHours, robj, "l", red+dashed);
-		}
+	}
+
+	if (drawFits)
+	{
+		real unc = 80;
+		RootGetObject(topDir+"/alignment/global_fit.root", units[ui]+"/b_fit");
+		draw(shift(0, +unc)*swToHours, robj, "l", red+dashed);
+		draw(shift(0,    0)*swToHours, robj, "l", red+2pt);
+		draw(shift(0, -unc)*swToHours, robj, "l", red+dashed);
 	}
 
 	//limits((time_min, -100), (time_max, +100), Crop);
