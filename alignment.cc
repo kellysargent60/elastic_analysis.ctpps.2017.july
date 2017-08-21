@@ -814,7 +814,7 @@ int main(int argc, char **argv)
 
 			unsigned int effective_entries = g_t->GetN() + g_b->GetN();
 			// TODO: adjust
-			if (effective_entries < 200)
+			if (effective_entries < 20)
 			{
 				printf("too few entries: %u, skipping.\n", effective_entries);
 				continue;
@@ -827,11 +827,13 @@ int main(int argc, char **argv)
 			TDirectory *unitDir = perDir->mkdir(buf);
 
 			fixTilt = false;
+			/*
 			if (units[ui] == "R_1_N")
 			{
 				fixTilt = true;
 				fixTiltValue = 20E-3;
 			}
+			*/
 			
 			gDirectory = unitDir->mkdir("horizontal");
 			DoHorizontalAlignment(g_t, g_b, r, results[units[ui]], periods[pi]);

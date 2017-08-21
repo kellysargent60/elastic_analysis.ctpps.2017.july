@@ -112,16 +112,16 @@ void Init_base()
 void Init_45b_56t()
 {
 	// analysis settings
-	anal.cut1_a = 1.; anal.cut1_c =  -7E-6; anal.cut1_si = 110E-6;
-	anal.cut2_a = 1.; anal.cut2_c = +10E-6; anal.cut2_si = 30E-6;
+	anal.cut1_a = 1.; anal.cut1_c =  0.0005; anal.cut1_si = 5E-4;
+	anal.cut2_a = 1.; anal.cut2_c =  5.1E-4; anal.cut2_si = 6.5E-5;
 
-	anal.cut3_c = 0.01; anal.cut3_si = 0.07;
-	anal.cut4_c = 0.0; anal.cut4_si = 0.14;
+	anal.cut3_c = 0.46; anal.cut3_si = 0.041;
+	anal.cut4_c = -0.043; anal.cut4_si = 0.026;
 	
-	anal.cut5_a = -0.13; anal.cut5_c = -0.; anal.cut5_si = 0.030;
-	anal.cut6_a = -0.13; anal.cut6_c = +0.03; anal.cut6_si = 0.030;
+	anal.cut5_a = -0.14; anal.cut5_c = -0.55; anal.cut5_si = 0.038;
+	anal.cut6_a = -0.0; anal.cut6_c = 0.14; anal.cut6_si = 10.0;
 
-	anal.cut7_a = 153.; anal.cut7_c = 0.; anal.cut7_si = 0.011;
+	anal.cut7_a = 0.0; anal.cut7_c = 0.51; anal.cut7_si = 10.0;
 
 	anal.th_y_lcut_L = 13.5E-6; anal.th_y_lcut_R = 14E-6; anal.th_y_lcut = 14.5E-6;
 	anal.th_y_hcut_L = 102E-6; anal.th_y_hcut_R = 102E-6; anal.th_y_hcut = 100E-6;
@@ -142,18 +142,18 @@ void Init_45b_56t()
 void Init_45t_56b()
 {
 	// analysis settings
-	anal.cut1_a = 1.; anal.cut1_c = -20E-6; anal.cut1_si = 110E-6;
-	anal.cut2_a = 1.; anal.cut2_c = -10E-6; anal.cut2_si = 30E-6;
+	anal.cut1_a = 1.; anal.cut1_c =  6.1E-4; anal.cut1_si = 4.9E-4;
+	anal.cut2_a = 1.; anal.cut2_c =  4.7E-4; anal.cut2_si = 2.9E-5;
 
-	anal.cut3_c = 0.0; anal.cut3_si = 0.07;
-	anal.cut4_c = 0.0; anal.cut4_si = 0.14;
+	anal.cut3_c = 0.43; anal.cut3_si = 0.038;
+	anal.cut4_c = -0.048; anal.cut4_si = 0.026;
+	
+	anal.cut5_a = -0.0; anal.cut5_c = -0.5; anal.cut5_si = 10.0;
+	anal.cut6_a = -0.0; anal.cut6_c = -0.04; anal.cut6_si = 10.0;
 
-	anal.cut5_a = -0.13; anal.cut5_c = +0.254; anal.cut5_si = 0.020;
-	anal.cut6_a = -0.13; anal.cut6_c = -0.03; anal.cut6_si = 0.030;
+	anal.cut7_a = 153.; anal.cut7_c = 0.; anal.cut7_si = 0.011;
 
-	anal.cut7_a = 165.; anal.cut7_c = +0.002; anal.cut7_si = 0.011;
-
-	anal.th_y_lcut_L = 13.5E-6; anal.th_y_lcut_R = 13.5E-6; anal.th_y_lcut = 14.5E-6;
+	anal.th_y_lcut_L = 13.5E-6; anal.th_y_lcut_R = 14E-6; anal.th_y_lcut = 14.5E-6;
 	anal.th_y_hcut_L = 102E-6; anal.th_y_hcut_R = 102E-6; anal.th_y_hcut = 100E-6;
 
 #if 0
