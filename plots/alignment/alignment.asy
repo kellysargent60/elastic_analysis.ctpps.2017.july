@@ -4,13 +4,17 @@ include "../run_info.asy";
 
 string topDir = "../../";
 
-string datasets[] = { "DS-cr-angle140" };
+string datasets[] = {
+	"DS-cr-angle120",
+	"DS-cr-angle130",
+	"DS-cr-angle140",
+};
 
 string units[] = { "L_2_F", "L_1_F", "R_1_F", "R_2_F" };
-string unit_labels[] = { "left, 220, far", "left, 210, far", "right, 210, far", "right, 220, far" };
+string unit_labels[] = { "45-220-fr", "45-210-fr", "56-210-fr", "56-220-fr" };
 
 xSizeDef = 12cm;
-xTicksDef = LeftTicks(Step=1, step=0.5);
+//xTicksDef = LeftTicks(Step=1, step=0.5);
 drawGridDef = true;
 
 TGraph_errorBar = None;
@@ -24,7 +28,7 @@ for (int ui : units.keys)
 {
 	NewPad("time $\ung{h}$", "tilt $\ung{mrad}$", axesAbove=false);
 	//currentpad.yTicks = RightTicks(5., 1.);
-	//DrawRunBands(-4, +4);
+	DrawRunBands(-40, +40);
 
 	for (int di : datasets.keys)
 	{
@@ -55,7 +59,7 @@ for (int ui : units.keys)
 {
 	NewPad("time $\ung{h}$", "horizontal position $\ung{\mu m}$", axesAbove=false);
 	//currentpad.yTicks = RightTicks(20., 10.);
-	//DrawRunBands(-100, +100);
+	DrawRunBands(0, +1000);
 
 	/*
 	TGraph_reducePoints = 30;

@@ -4,36 +4,47 @@ include "../run_info.asy";
 
 string topDir = "../../";
 
-string dataset = "DS-cr-angle140";
+string datasets[], dataset_periods[];
+datasets.push("DS-cr-angle120"); dataset_periods.push("period 0");
+datasets.push("DS-cr-angle130"); dataset_periods.push("period 0");
+datasets.push("DS-cr-angle140"); dataset_periods.push("period 0");
 
 string units[] = { "L_2_F", "L_1_F", "R_1_F", "R_2_F" };
-string unit_labels[] = { "left, 220, far", "left, 210, far", "right, 210, far", "right, 220, far" };
+string unit_labels[] = { "45-220-fr", "45-210-fr", "56-210-fr", "56-220-fr" };
 
 xSizeDef = 10cm;
 drawGridDef = true;
 
 TGraph_errorBar = None;
 
-string period = "period 6";
-
 //----------------------------------------------------------------------------------------------------
-NewRow();
 
-for (int ui : units.keys)
+for (int dsi : datasets.keys)
 {
-	NewPad("$y\ung{mm}$", "$\hbox{mean } x\ung{mm}$");
+	NewRow();
 
-	draw(RootGetObject(topDir+dataset+"/alignment.root", period + "/unit "+units[ui]+"/horizontal/horizontal profile/p"), "d0,eb", blue);
-	draw(RootGetObject(topDir+dataset+"/alignment.root", period + "/unit "+units[ui]+"/horizontal/horizontal profile/p|ff"), "l", red+1pt);
-	
-	limits((-7, 2), (+7, 4), Crop);
-	AttachLegend(unit_labels[ui], NE, NE);
+	NewPad(false);
+	label("\vbox{\SetFontSizesXX\hbox{" + datasets[dsi] + "}\hbox{" + dataset_periods[dsi] + "}}");
+
+	string dataset = datasets[dsi];
+	string period = dataset_periods[dsi];
+
+	for (int ui : units.keys)
+	{
+		NewPad("$y\ung{mm}$", "$\hbox{mean } x\ung{mm}$");
+
+		draw(RootGetObject(topDir+dataset+"/alignment.root", period + "/unit "+units[ui]+"/horizontal/horizontal profile/p"), "d0,eb", blue);
+		draw(RootGetObject(topDir+dataset+"/alignment.root", period + "/unit "+units[ui]+"/horizontal/horizontal profile/p|ff"), "l", red+1pt);
+
+		limits((-3, -0.2), (+7, 1.3), Crop);
+		AttachLegend(unit_labels[ui], NE, NE);
+	}
 }
 
 //----------------------------------------------------------------------------------------------------
+/*
 NewRow();
 
-/*
 
 for (int ui : units.keys)
 {
