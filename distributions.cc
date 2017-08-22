@@ -804,11 +804,7 @@ int main(int argc, char **argv)
 		}
 
 		// diagonal cut
-		bool allDiagonalRPs;
-		if (diagonal == d45b_56t)
-			allDiagonalRPs = ev.h.L_1_F.v && ev.h.L_2_F.v &&                 ev.h.R_2_F.v;
-		else 
-			allDiagonalRPs = ev.h.L_1_F.v && ev.h.L_2_F.v && ev.h.R_1_F.v && ev.h.R_2_F.v;
+		bool allDiagonalRPs = ev.h.L_1_F.v && ev.h.L_2_F.v && ev.h.R_1_F.v && ev.h.R_2_F.v;
 
 		if (!allDiagonalRPs)
 			continue;
