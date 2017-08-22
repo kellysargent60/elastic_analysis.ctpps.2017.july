@@ -21,6 +21,8 @@ TGraph_errorBar = None;
 
 bool drawFits = true;
 
+real samplingTime = 20 * 3600;
+
 //----------------------------------------------------------------------------------------------------
 NewRow();
 
@@ -45,6 +47,9 @@ for (int ui : units.keys)
 		draw(shift(0, +unc)*swToHours, robj, "l", red+dashed);
 		draw(shift(0,    0)*swToHours, robj, "l", red+2pt);
 		draw(shift(0, -unc)*swToHours, robj, "l", red+dashed);
+
+		real corr = robj.rExec("Eval", samplingTime);
+		AddToLegend(format("%.0f", corr), red);
 	}
 
 	//limits((time_min, 0), (time_max, +40), Crop);
@@ -58,7 +63,7 @@ for (int ui : units.keys)
 {
 	NewPad("time $\ung{h}$", "horizontal position $\ung{\mu m}$", axesAbove=false);
 	//currentpad.yTicks = RightTicks(20., 10.);
-	DrawRunBands(0, +1000);
+	DrawRunBands(-100, +1000);
 
 	/*
 	TGraph_reducePoints = 30;
@@ -83,6 +88,9 @@ for (int ui : units.keys)
 		draw(shift(0, +unc)*swToHours, robj, "l", red+dashed);
 		draw(shift(0,    0)*swToHours, robj, "l", red+2pt);
 		draw(shift(0, -unc)*swToHours, robj, "l", red+dashed);
+
+		real corr = robj.rExec("Eval", samplingTime);
+		AddToLegend(format("%.0f", corr), red);
 	}
 
 	//limits((time_min, -100), (time_max, +100), Crop);

@@ -4,9 +4,9 @@ import pad_layout;
 string topDir = "../../";
 
 string dataset = "DS-cr-angle140";
-string period = "6";
-int period_idx = 5; // period index in global graph
-string unit = "L_1_F";
+string period = "0";
+int period_idx = 1; // period index in global graph
+string unit = "R_1_F";
 
 string f = topDir + dataset + "/alignment.root";
 string dir = "period "+period+"/unit "+unit;
