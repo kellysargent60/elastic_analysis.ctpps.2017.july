@@ -289,6 +289,8 @@ int main(int argc, char **argv)
 	// init output file
 	TFile *outF = new TFile((outputDir+"/distributions_" + argv[1] + ".root").c_str(), "recreate");
 
+	FILE *f_out_cand = fopen((outputDir+"/candidates_" + argv[1] + ".txt").c_str(), "w");
+
 	// get input data
 	EventRed ev;
 	ch_in->SetBranchAddress("v_L_1_F", &ev.h.L_1_F.v); ch_in->SetBranchAddress("x_L_1_F", &ev.h.L_1_F.x); ch_in->SetBranchAddress("y_L_1_F", &ev.h.L_1_F.y);
@@ -958,6 +960,12 @@ int main(int argc, char **argv)
 		// elastic cut
 		if (!select)
 			continue;
+
+		fprintf(f_out_cand, "elastic candidate: ");
+		fprintf(f_out_cand, "L_2_F.x = %E, L_2_F.y = %E, ", ev.h.L_2_F.x, ev.h.L_2_F.y);
+		fprintf(f_out_cand, "L_1_F.x = %E, L_1_F.y = %E, ", ev.h.L_1_F.x, ev.h.L_1_F.y);
+		fprintf(f_out_cand, "R_1_F.x = %E, R_1_F.y = %E, ", ev.h.R_1_F.x, ev.h.R_1_F.y);
+		fprintf(f_out_cand, "R_2_F.x = %E, R_2_F.y = %E\n", ev.h.R_2_F.x, ev.h.R_2_F.y);
 
 		g_selected_bunch_num_vs_timestamp->SetPoint(g_selected_bunch_num_vs_timestamp->GetN(), ev.timestamp, ev.bunch_num);
 
@@ -2241,6 +2249,10 @@ int main(int argc, char **argv)
 	// print counters
 	for (map<unsigned int, unsigned long>::iterator it = n_ev_cut.begin(); it != n_ev_cut.end(); ++it)
 		printf("\tcut %u: %lu\n", it->first, it->second);
+
+	// clean up
+	delete outF;
+	fclose(f_out_cand);
 
 	return 0;
 }
