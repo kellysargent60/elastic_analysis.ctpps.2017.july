@@ -21,8 +21,8 @@ drawGridDef = true;
 
 TH2_x_min = -3;
 TH2_x_max = +3;
-TH2_y_min = -3;
-TH2_y_max = +7;
+TH2_y_min = -5;
+TH2_y_max = +5;
 
 //----------------------------------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ for (int dsi : datasets.keys)
 
 		//draw(shift(6.2, 0)*rotate(-90)*det_shape);
 
-		limits((-3, -3), (+3, +7), Crop);
+		limits((-3, -5), (+3, +5), Crop);
 		//limits((-30, -9), (+30, +9), Crop);
 
 		AttachLegend(replace(unit_labels[ui], "_", "\_"));

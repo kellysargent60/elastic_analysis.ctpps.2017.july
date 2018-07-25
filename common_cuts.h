@@ -10,14 +10,16 @@ void Analysis::BuildCuts()
 	ccb[1] = 1.;
 	ccc[1] = cut1_c;
 	csi[1] = cut1_si;
-	cuts.push_back(1);
+	// TODO: enable
+	//cuts.push_back(1);
 	
 	cqaN[2] = "#theta_{y}^{R}"; cqbN[2] = "#theta_{y}^{L}";
 	cca[2] = -cut2_a;
 	ccb[2] = 1.;
 	ccc[2] = cut2_c;
 	csi[2] = cut2_si;
-	cuts.push_back(2);
+	// TODO: enable
+	//cuts.push_back(2);
 
 	cqaN[3] = "#theta_{x}^{R}"; cqbN[3] = "vtx_{x}^{R}";
 	cca[3] = -cut3_a;
@@ -38,14 +40,16 @@ void Analysis::BuildCuts()
 	ccb[5] = 1.;
 	ccc[5] = cut5_c;
 	csi[5] = cut5_si;
-	cuts.push_back(5);
+	// TODO: enable
+	//cuts.push_back(5);
 	
 	cqaN[6] = "y^{L,2,F}"; cqbN[6] = "y^{L,2,F} - y^{L,1,F}";
 	cca[6] = -cut6_a;
 	ccb[6] = 1.;
 	ccc[6] = cut6_c;
 	csi[6] = cut6_si;
-	cuts.push_back(6);
+	// TODO: enable
+	//cuts.push_back(6);
 	
 	cqaN[7] = "#theta_{x}"; cqbN[7] = "vtx_{x}^{R} - vtx_{x}^{L}";
 	cca[7] = -cut7_a;

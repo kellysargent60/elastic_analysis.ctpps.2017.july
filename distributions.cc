@@ -879,10 +879,10 @@ int main(int argc, char **argv)
 		*/
 
 		// hit-map cuts
-		if (h_al.L_2_F.x < -6 || h_al.L_2_F.x > +6|| fabs(h_al.L_2_F.y) > 50)
+		if (h_al.L_2_F.x < -1.5 || h_al.L_2_F.x > +1.5 || fabs(h_al.L_2_F.y) > 4.)
 			continue;
 
-		if (h_al.R_2_F.x < -6 || h_al.R_2_F.x > +6|| fabs(h_al.R_2_F.y) > 50)
+		if (h_al.R_2_F.x < -1.5 || h_al.R_2_F.x > +1.5 || fabs(h_al.R_2_F.y) > 4.)
 			continue;
 
 		// cut evaluation

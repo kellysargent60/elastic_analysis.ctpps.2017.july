@@ -83,7 +83,7 @@ for (int ui : units.keys)
 
 	if (drawFits)
 	{
-		real unc = 80;
+		real unc = 100;
 		RootGetObject(topDir+"/alignment/global_fit.root", units[ui]+"/b_fit");
 		draw(shift(0, +unc)*swToHours, robj, "l", red+dashed);
 		draw(shift(0,    0)*swToHours, robj, "l", red+2pt);
