@@ -17,13 +17,9 @@ echo "	std::string prefix;"
 
 filter="run_298594"
 
-PrintOne "/eos/totem/data/ctpps/reconstruction/2017/alignment_run_July/version4-pilot"
-
-PrintOne "/eos/totem/data/ctpps/reconstruction/2017/alignment_run_July/version4-rest"
+PrintOne "/eos/totem/data/ctpps/reconstruction/2017/alignment_run_July/version6"
 
 filter="run_298596"
 
-PrintOne "/eos/totem/data/ctpps/reconstruction/2017/alignment_run_July/version4-pilot"
-
-PrintOne "/eos/totem/data/ctpps/reconstruction/2017/alignment_run_July/version4-rest"
+PrintOne "/eos/totem/data/ctpps/reconstruction/2017/alignment_run_July/version6"
 
